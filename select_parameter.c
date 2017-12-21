@@ -3,26 +3,49 @@
 
 void Select_p(mpz_t* p)
 {
-  unsigned long int seedParameter = 3.1415926553660;
+  const unsigned long int seedParameter = 3.1415926553660;
+  const mp_bitcnt_t bit_index = 0;
   mpz_t limitNum;
   mpz_init(limitNum);
   mpz_set_ui(limitNum, 0);
   RandomMpz_t(p, limitNum, seedParameter);
+  if(mpz_tstbit(*p, bit_index)) 
+  {
+    while( MILLER_RABIN(*p) ) mpz_add_ui(*p, *p, 2);
+  }else {
+    mpz_add_ui(*p, *p, 1);
+    while( MILLER_RABIN(*p) ) mpz_add_ui(*p, *p, 2);
+  }
+
+  return;
 }
 
 void Select_q(mpz_t* q)
 {
-  unsigned long int seedParameter = 15659269653;
+  const unsigned long int seedParameter = 15659269653;
+  const mp_bitcnt_t bit_index = 0;
   mpz_t limitNum;
   mpz_init(limitNum);
   mpz_set_ui(limitNum, 0);
   RandomMpz_t(q, limitNum, seedParameter);
+  if(mpz_tstbit(*q, bit_index)) 
+  {
+    while( MILLER_RABIN(*q) ) mpz_add_ui(*q, *q, 2);
+  }else {
+    mpz_add_ui(*q, *q, 1);
+    while( MILLER_RABIN(*q) ) mpz_add_ui(*q, *q, 2);
+  }
+
+
+  return;
 }
 
 
 void Select_n(const mpz_t p, const mpz_t q, mpz_t *n)
 {
-  mpz_mul(*n, p, q);  // set n to p times q  
+  mpz_mul(*n, p, q);  // set n to p times q 
+
+  return; 
 }
 
 void Select_Euler_n(const mpz_t p, const mpz_t q, mpz_t *_n)
@@ -33,6 +56,8 @@ void Select_Euler_n(const mpz_t p, const mpz_t q, mpz_t *_n)
   mpz_sub_ui(_p, p, 1);
   mpz_sub_ui(_q, q, 1);
   mpz_mul(*_n, _p, _q);
+
+  return;
 }
 
 void Select_e(unsigned long int *e, const mpz_t _n)
@@ -47,7 +72,9 @@ void Select_e(unsigned long int *e, const mpz_t _n)
   {
     (*e) += 1;
     mpz_gcd_ui(rop, _n, *e);  
-  } 
+  }
+
+  return; 
 }
 
 void Select_d(const unsigned long int e, mpz_t _n, mpz_t *d)
@@ -63,6 +90,8 @@ void Select_d(const unsigned long int e, mpz_t _n, mpz_t *d)
   //xgcd(_n, mpz_t_e, &_d, d, &y);
   //EXTENDED_ECUCLID(_n, mpz_t_e, &_d, d, &y);
   mpz_gcdext(_d, *d, y, mpz_t_e, _n); 
+
+  return;
 }
 
 
