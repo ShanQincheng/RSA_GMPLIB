@@ -5,4 +5,4 @@ complie command:
 $ gcc -g miller_rabin_primality_test.c random_number.c rsa_algorithm.c select_parameter.c main.c -lgmp -o rsa
 
 run command:
-./rsa
+$ ./rsa
